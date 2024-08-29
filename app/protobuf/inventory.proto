@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package inventory;
+
+option go_package = "./pb";
+
+message Item {
+    string id = 1;
+    string sku = 2;
+    string name = 3;
+}
+
+message ItemInventory {
+    Item item = 1;
+    string location = 2;
+    uint32 quantity = 3;
+}
+
+message FindInventoryByNameRequest {
+    string name = 1;
+}
+
+message FindInventoryResponse {
+    repeated ItemInventory inventory_items = 1;
+}
+
+message TransferInventoryRequest {
+    string item_id = 1;
+    uint32 quantity = 2;
+    string from_location = 3;
+    string to_location = 4;
+}
+
+message TransferInventoryResponse {
+    uint32 from_location_quantity = 1;
+    uint32 to_location_quantity = 2;
+}
+
+service InventoryService {
+    rpc FindInventoryByName(FindInventoryByNameRequest) returns (FindInventoryResponse);
+    rpc TransferInventory(TransferInventoryRequest) returns (TransferInventoryResponse);
+}
+
+
